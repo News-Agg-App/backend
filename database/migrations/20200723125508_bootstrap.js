@@ -3,7 +3,9 @@ exports.up = function (knex) {
     .createTable("users", (tbl) => {
         tbl.increments();
         tbl.string("username", 128).notNullable().unique();
-        tbl.string(political_orientation).notNullable();
+        tbl.string("password", 128).notNullable();
+        tbl.string('political_orientation', 500).notNullable();
+        tbl.string('email', 500).notNullable();
     })
     .createTable("posts", (tbl) => {
         tbl.increments();
@@ -35,7 +37,7 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
     return knex.schema
-        .droptTableIfExists("user_posts")
-        .droptTableIfExists("posts")
-        .droptTableIfExists("users")
+        .dropTableIfExists("user_posts")
+        .dropTableIfExists("posts")
+        .dropTableIfExists("users")
 };
