@@ -9,19 +9,19 @@ exports.seed = function(knex, Promise)
             {
                 email: "bob@bobmail.com",
                 username: "Bob Loblaw",
-                political_orientation: "Left",
+                political_orientation: "left",
                 password: bcrypt.hashSync("password", hashCount)
             },
             {
                 email: "amy@bobmail.com",
                 username: "Amylee",
-                political_orientation: "Right",
+                political_orientation: "right",
                 password: bcrypt.hashSync("password", hashCount)
             },
             {
                 email: "jim@bobmail.com",
                 username: "Jimbob",
-                political_orientation: "Center",
+                political_orientation: "center",
                 password: bcrypt.hashSync("password", hashCount)
             }
         ]

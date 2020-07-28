@@ -27,24 +27,33 @@ async function findAll() {
     let posts = await db('posts as p')
         .join('user_posts as up', 'up.post_id', '=', 'p.id')
         .join('users as u', 'u.id', '=', 'up.user_id')
-        .select('u.username', 'p.url', 'up.creator', 'up.vote')
+        .select('u.username', 'u.political_orientation', 'p.url', 'up.creator', 'up.vote')
 
     const retPosts = {}
     posts.forEach(post =>
     {
-        console.log(post)
+        
         if(!retPosts.hasOwnProperty(post.url)) {
-            retPosts[post.url] = {url: post.url, 0: 0, 1: 0, 2: 0, creator: ''}
-            retPosts[post.url][post.vote]++
-            console.log('retPosts[post.url][creator], post.username', retPosts[post.url].creator, post.username)
+            retPosts[post.url] = {
+                url: post.url, 
+                creator: '',
+                left_0: 0, 
+                left_1: 0, 
+                left_2: 0, 
+                center_0: 0, 
+                center_1: 0, 
+                center_2: 0, 
+                right_0: 0, 
+                right_1: 0, 
+                right_2: 0, 
+            }
+            retPosts[post.url][`${post.political_orientation}_${post.vote}`]++
             if (post.creator === 1) retPosts[post.url].creator = post.username
-            console.log('retPostsd', retPosts)
         }
         else {
-            console.log('a')
-            retPosts[post.url][post.vote]++
+            
+            retPosts[post.url][`${post.political_orientation}_${post.vote}`]++
             if (post.creator) retPosts[post.url][creator] = post.username
-            console.log('retPosts', retPosts)
         }
     })
     const retPostsArr = []
@@ -53,6 +62,4 @@ async function findAll() {
     }
 
     return retPostsArr
-    return retPosts
-    return posts
 }
