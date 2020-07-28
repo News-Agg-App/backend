@@ -24,6 +24,35 @@ async function add(post, user_id) {
 }
 
 async function findAll() {
-    let posts = await db('posts')
+    let posts = await db('posts as p')
+        .join('user_posts as up', 'up.post_id', '=', 'p.id')
+        .join('users as u', 'u.id', '=', 'up.user_id')
+        .select('u.username', 'p.url', 'up.creator', 'up.vote')
+
+    const retPosts = {}
+    posts.forEach(post =>
+    {
+        console.log(post)
+        if(!retPosts.hasOwnProperty(post.url)) {
+            retPosts[post.url] = {url: post.url, 0: 0, 1: 0, 2: 0, creator: ''}
+            retPosts[post.url][post.vote]++
+            console.log('retPosts[post.url][creator], post.username', retPosts[post.url].creator, post.username)
+            if (post.creator === 1) retPosts[post.url].creator = post.username
+            console.log('retPostsd', retPosts)
+        }
+        else {
+            console.log('a')
+            retPosts[post.url][post.vote]++
+            if (post.creator) retPosts[post.url][creator] = post.username
+            console.log('retPosts', retPosts)
+        }
+    })
+    const retPostsArr = []
+    for (const prop in retPosts) {
+        retPostsArr.push(retPosts[prop])
+    }
+
+    return retPostsArr
+    return retPosts
     return posts
 }
