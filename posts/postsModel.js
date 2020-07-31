@@ -27,7 +27,7 @@ async function findAll() {
     let posts = await db('posts as p')
         .join('user_posts as up', 'up.post_id', '=', 'p.id')
         .join('users as u', 'u.id', '=', 'up.user_id')
-        .select('u.username', 'u.political_orientation', 'p.url', 'up.creator', 'up.vote')
+        .select('u.username', 'u.political_orientation', 'p.url', 'up.creator', 'up.vote', 'p.id')
 
     const retPosts = {}
     posts.forEach(post =>
@@ -35,7 +35,8 @@ async function findAll() {
         
         if(!retPosts.hasOwnProperty(post.url)) {
             retPosts[post.url] = {
-                url: post.url, 
+                url: post.url,
+                id: post.id,
                 creator: '',
                 left_0: 0, 
                 left_1: 0, 
@@ -60,6 +61,6 @@ async function findAll() {
     for (const prop in retPosts) {
         retPostsArr.push(retPosts[prop])
     }
-
+    console.log(retPostsArr)
     return retPostsArr
 }
